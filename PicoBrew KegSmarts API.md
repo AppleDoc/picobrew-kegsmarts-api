@@ -104,14 +104,14 @@ Values:
 		* kT - Current temperature in Fahrenheit of the keg/KegWarmer.
 		* State - 1=tapped, unknown if others.
 		* Weight - Adjusted weight of the beer only, in grams. The Fermentation call includes a value for the weight of the keg, which is subtracted from the raw number the KegPlate reports to the KegSmarts (as can be seen on the device via Home-> Configure KegSmarts-> Configure Equipment-> KegPlate-> Test KegPlate).
-	* Fermenting is in the format "Location_kT_?_State_Weight_Fermentation_??_Time_fT"
+	* Fermenting is in the format "Location_kT_nnn_State_Weight_Fermentation_n_Time_fT"
 		* Location - 1-4, for Taps and kegs (a two-tap system has Tap 1, Tap 2, and Keg 3; a three-tap system has Tap 1, Tap 2, Tap 3, and Keg 4).
 		* kT - Current temperature in Fahrenheit of the keg/KegWarmer.
-		* ? - A 3-digit value that appears to increase and decrease at times throughout the fermentation. Does not correspond to SG. Perhaps a more sensitive temperature reading to 3 decimals?
+		* nnn - A 3-digit value that appears to increase and decrease at times throughout the fermentation. Does not correspond to SG. Perhaps a more sensitive temperature reading to 3 decimals?
 		* State - 2=fermenting, unknown if others.
 		* Weight - Adjusted weight of the beer only, in grams. The Fermentation call includes a value for the weight of the keg, which is subtracted from the raw number the KegPlate reports to the KegSmarts (as can be seen on the device via Home-> Configure KegSmarts-> Configure Equipment-> KegPlate-> Test KegPlate).
 		* Fermentation - Appears to be static.
-		* ?? - Appears to be static at "1".
+		* n - Appears to be static at "1".
 		* Time - Minutes remaining of fermentation session until the cold crash.
 		* fT - Goal temperature in Fahrenheit of the fermentation session. 
 		
@@ -193,7 +193,7 @@ Values (NOTE: this is a fairly complicated string, so many of these are best gue
 Example 1:
 
 ```
-    #KegSmart's|2|50$4|0|1$4|2|2$0|1$1|2|7.3|159|50|mstitzer|Stargazer Z Kit|American IPA|Cascade,Centennial,Columbus,Comet|American Two-Row Pale,CaraPils,Crystal 40L,Victory Malt|0|48|3515|0$0|3$# 
+    #KegSmart's|2|50$4|0|1$4|2|2$0|1$1|2|7.3|159|50|picobrewer|Stargazer Z Kit|American IPA|Cascade,Centennial,Columbus,Comet|American Two-Row Pale,CaraPils,Crystal 40L,Victory Malt|0|48|3515|0$0|3$# 
 ```
 This example shows a kegerator named "KegSmart's" with 2 taps, a temperature of 50F, KegPlate 1 is unassigned, KegPlate 2 is assigned to Tap 2, Tap 1 is inactive; Tap 2 has Stargazer Z Kit tapped, with 0 oz. remaining, 48 days on tap, a keg weight of 3515 grams, and a 0/5 rating; and Keg 3 is inactive.
 
