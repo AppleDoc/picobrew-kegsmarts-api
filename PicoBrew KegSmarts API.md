@@ -1,6 +1,6 @@
 # KegSmarts APIs
 
-The KegSmarts uses HTTP in requests and responses.  It appears all data transfers are initiated via a GET request from the device to PicoBrew's server running ASP.Net. Responses are generated and sent back, when needed. 
+The KegSmarts uses HTTP in requests and responses.  It appears all data transfers are initiated via a GET request from the device to PicoBrew's server running ASP.Net.
 
 Please note, all data was captured with a 2-tap kegerator and a KegSmarts configured for such a system. A 3-tap system's settings are assumed below, but have not actually been captured or tested.
 
