@@ -177,7 +177,7 @@ Values (NOTE: this is a fairly complicated string, so many of these are best gue
 		* Beer Style - Pulled from the recipe.
 		* Hops - Pulled from the recipe. 
 		* Grains - Pulled from the recipe. Does not display on the device.
-		* Oz Remaining - Converted from grams via adjusted KegPlate, or via "Dispense Menu-> Pour a Glass" selection on KegSmarts device.
+		* Oz Remaining - Converted from grams via adjusted KegPlate to ounces, or via "Dispense Menu-> Pour a Glass" selection on KegSmarts device.
 		* DaysT - Time in days since the keg was tapped.
 		* kWeight - Keg's weight in grams, to be subtracted from the raw KegPlate measurement recorded by the KegSmarts. Pulled from the recipe.
 		* Rating = 0-5 out of 5. Selected via "Dispense Menu-> Ratings" selection on KegSmarts device or via the PicoBrew web interface.
