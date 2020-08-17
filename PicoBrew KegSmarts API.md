@@ -32,7 +32,7 @@ Connection: Keep-Alive`
 
 Values:
 
-* PID: The product ID for the KegSmarts, as reported PicoBrew's User->Settings->Equipment page.
+* PID: The product ID for the KegSmarts, as reported on PicoBrew's User->Settings->Equipment page.
 * Version: The firmware version currently installed. (1.0.6 is the most recent)
 
 Example:
@@ -55,7 +55,7 @@ Connection: Keep-Alive`
 
 Values:
 
-* PID: The product ID for the KegSmarts, as reported PicoBrew's User->Settings->Equipment page.
+* PID: The product ID for the KegSmarts, as reported on PicoBrew's User->Settings->Equipment page.
 * sensors: strings in the format of "Location_UID_Type(_ID)" separated by a "!"
 	* Location values appear to be:
 		* 0 - Unassigned (KegSmarts Thermometer always has this value)
@@ -95,7 +95,7 @@ Connection: Keep-Alive`
 
 Values:
 
-* PID: The product ID for the KegSmarts, as reported PicoBrew's User->Settings->Equipment page.
+* PID: The product ID for the KegSmarts, as reported on PicoBrew's User->Settings->Equipment page.
 * data: strings in 3 format. The first is always the thermometer, while the others depend on if a keg is tapped or fermenting. All are separated by a "!".
 	* Thermometer is in the format "0_T_0_0_0"
 		* T - Current temperature in Fahrenheit of the kegerator.
@@ -148,7 +148,7 @@ Connection: Keep-Alive`
 
 Values:
 
-* PID: The product ID for the KegSmarts, as reported PicoBrew's User->Settings->Equipment page.
+* PID: The product ID for the KegSmarts, as reported on PicoBrew's User->Settings->Equipment page.
 
 ##### Response
 
@@ -214,7 +214,7 @@ Connection: Keep-Alive`
 
 Values:
 
-* PID: The product ID for the KegSmarts, as reported PicoBrew's User->Settings->Equipment page.
+* PID: The product ID for the KegSmarts, as reported on PicoBrew's User->Settings->Equipment page.
 
 ##### Response
 
@@ -240,7 +240,7 @@ Connection: Keep-Alive`
 
 Values:
 
-* PID: The product ID for the KegSmarts, as reported PicoBrew's User->Settings->Equipment page.
+* PID: The product ID for the KegSmarts, as reported on PicoBrew's User->Settings->Equipment page.
 * code: 0=pull list from server 1=pull session info
 
 ##### Response - Step 1
@@ -266,7 +266,7 @@ Connection: Keep-Alive`
 
 Values:
 
-* PID: The product ID for the KegSmarts, as reported PicoBrew's User->Settings->Equipment page.
+* PID: The product ID for the KegSmarts, as reported on PicoBrew's User->Settings->Equipment page.
 * code: 0=pull list from server 1=pull session info
 * hash1: The unique ID from the list in step 1.
 * Location - 1-4, for Taps and kegs (a two-tap system has Tap 1, Tap 2, and Keg 3; a three-tap system has Tap 1, Tap 2, Tap 3, and Keg 4).
