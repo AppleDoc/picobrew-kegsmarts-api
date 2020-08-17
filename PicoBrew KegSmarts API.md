@@ -71,8 +71,8 @@ Values:
 	* ID values appear for the user-added items, to match the GUI selection on the KegSmarts and the label on the PicoBrew web interface:
 		* KegPlate - KegSmarts supports up to 4 (4 is reserved for a CO2 plate).
 		* KegWarmer - KegSmarts supports up to 2, with the extended tail unit (1 with the default).
-* mT: Temperature in Farenheit, appears to always be "32" (freezing).
-* T: Temperature in Farenheit, the current user-selected temperature.
+* mT: Temperature in Fahrenheit, appears to always be "32" (freezing).
+* T: Temperature in Fahrenheit, the current user-selected temperature.
 		
 Example:
 
@@ -98,22 +98,22 @@ Values:
 * PID: The product ID for the KegSmarts, as reported PicoBrew's User->Settings->Equipment page.
 * data: strings in 3 format. The first is always the thermometer, while the others depend on if a keg is tapped or fermenting. All are separated by a "!".
 	* Thermometer is in the format "0_T_0_0_0"
-		* T - Current temperature in Farenheit of the kegerator.
+		* T - Current temperature in Fahrenheit of the kegerator.
 	* Tapped is in the format "Location_kT_0_State_Weight"
 		* Location - 1-4, for Taps and kegs (a two-tap system has Tap 1, Tap 2, and Keg 3; a three-tap system has Tap 1, Tap 2, Tap 3, and Keg 4).
-		* kT - Current temperature in Farenheit of the keg/KegWarmer.
+		* kT - Current temperature in Fahrenheit of the keg/KegWarmer.
 		* State - 1=tapped, unknown if others.
 		* Weight - Adjusted weight of the beer only, in grams. The Fermentation call includes a value for the weight of the keg, which is subtracted from the raw number the KegPlate reports to the KegSmarts (as can be seen on the device via Home-> Configure KegSmarts-> Configure Equipment-> KegPlate-> Test KegPlate).
 	* Fermenting is in the format "Location_kT_?_State_Weight_Fermentation_??_Time_fT"
 		* Location - 1-4, for Taps and kegs (a two-tap system has Tap 1, Tap 2, and Keg 3; a three-tap system has Tap 1, Tap 2, Tap 3, and Keg 4).
-		* kT - Current temperature in Farenheit of the keg/KegWarmer.
+		* kT - Current temperature in Fahrenheit of the keg/KegWarmer.
 		* ? - A 3-digit value that appears to increase and decrease at times throughout the fermentation. Does not correspond to SG. Perhaps a more sensitive temperature reading to 3 decimals?
 		* State - 2=fermenting, unknown if others.
 		* Weight - Adjusted weight of the beer only, in grams. The Fermentation call includes a value for the weight of the keg, which is subtracted from the raw number the KegPlate reports to the KegSmarts (as can be seen on the device via Home-> Configure KegSmarts-> Configure Equipment-> KegPlate-> Test KegPlate).
 		* Fermentation - Appears to be static.
 		* ?? - Appears to be static at "1".
 		* Time - Minutes remaining of fermentation session until the cold crash.
-		* fT - Goal temperature in Farenheit of the fermentation session. 
+		* fT - Goal temperature in Fahrenheit of the fermentation session. 
 		
 Example 1:
 
@@ -158,7 +158,7 @@ Values (NOTE: this is a fairly complicated string, so many of these are best gue
 
 * NAME: The name of the KegSmarts.
 * TT: Total physical taps present on the device.
-* kT: Current goal temperature in Farenheit of the kegerator.
+* kT: Current goal temperature in Fahrenheit of the kegerator.
 * $: Separator
 * D: Device string in the format "Type|Location|ID"
 	* Type - 4=KegPlate and 5=KegWarmer
@@ -171,7 +171,7 @@ Values (NOTE: this is a fairly complicated string, so many of these are best gue
 	* Tapped - Follows with "|ABV|IBU|Temp|user|Beer Name|Beer Style|Hops|Grains|Oz Remaining|DaysT|kWeight|Rating"
 		* ABV - Alcohol by volume to 1 decimal. Pulled from the recipe.
 		* IBU - International bitterness units. Pulled from the recipe.
-		* Temp - Current serving temperature in Farenheit of keg/KegWarmer.
+		* Temp - Current serving temperature in Fahrenheit of keg/KegWarmer.
 		* user - User who brewed the beer. Pulled from the recipe. 
 		* Beer Name - Pulled from the recipe.
 		* Beer Style - Pulled from the recipe.
@@ -184,11 +184,11 @@ Values (NOTE: this is a fairly complicated string, so many of these are best gue
 	* Fermenting - Follows with "|Beer Name|hash|fT|?|Time|Ferment|Crash|Rating"
 		* Beer Name - Pulled from the fermentation.
 		* hash - Appears this is a unique ID generated from PicoBrew's server.
-		* sT - Current set temperature in Farenheit of the fermentation session.
+		* sT - Current set temperature in Fahrenheit of the fermentation session.
 		* ? - Appears to be static at "1".
 		* Time - Minutes remaining of fermentation session until the cold crash.
-		* Ferment - Appears to be static "Fermentation, goal session temperature in Farenheit, total fermentation time in minutes". Pulled from the fermentation.
-		* Crash - Appears to be static "Crash Chill, goal crash temperature in Farenheit, 0" 
+		* Ferment - Appears to be static "Fermentation, goal session temperature in Fahrenheit, total fermentation time in minutes". Pulled from the fermentation.
+		* Crash - Appears to be static "Crash Chill, goal crash temperature in Fahrenheit, 0" 
 
 Example 1:
 
@@ -285,7 +285,7 @@ This is the result of selecting to start fermenting "Black is Beautiful" from th
 
 Values:
 * Fermentation: Appears to be static.
-* fT: Goal temperature in Farenheit of the fermentation session. 
+* fT: Goal temperature in Fahrenheit of the fermentation session. 
 * Time: Minutes remaining of fermentation session until the cold crash.
 * Crash Chill: Appears to be static.
 * cT: Goal temperature in Farenheit of the cold crash.
