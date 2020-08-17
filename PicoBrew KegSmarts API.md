@@ -79,7 +79,7 @@ Example:
 ```
 GET /api/ks/rev1/configure?machine=1234ab123456&sensors=0_bb60caa11603_0!3_123ac7190000_1_1!0_123bc7190000_1_2!3_aa1cbe931604_2_1&mintemp=32&tempData=65
 ```
-This example on a 2-tap system has a thermometer, KegPlate 1 assigned to Keg 3, KegPlate 2 unassigned, and KegWarmer 1 assigned to Keg 3. 
+This example on a 2-tap system has a thermometer, KegPlate 1 assigned to Keg 3, KegPlate 2 unassigned, KegWarmer 1 assigned to Keg 3, minimum temperature of 32F, and kegerator temperature set to 65F. 
 
 ##### Response
 
