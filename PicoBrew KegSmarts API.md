@@ -79,7 +79,7 @@ Example:
 ```
 GET /api/ks/rev1/configure?machine=1234ab123456&sensors=0_bb60caa11603_0!3_123ac7190000_1_1!0_123bc7190000_1_2!3_aa1cbe931604_2_1&mintemp=32&tempData=65
 ```
-This example on a 2-tap system has a thermometer, KegPlate 1 assigned to Keg 3, KegPlate 2 unassigned, KegWarmer 1 assigned to Keg 3, minimum temperature of 32F, and kegerator temperature set to 65F. 
+This example on a 2-tap system has the ID 1234ab123456, a thermometer, KegPlate 1 assigned to Keg 3, KegPlate 2 unassigned, KegWarmer 1 assigned to Keg 3, minimum temperature of 32F, and kegerator temperature set to 65F. 
 
 ##### Response
 
@@ -96,19 +96,20 @@ Connection: Keep-Alive`
 Values:
 
 * PID: The product ID for the KegSmarts, as reported on PicoBrew's User->Settings->Equipment page.
-* data: strings in 3 format. The first is always the thermometer, while the others depend on if a keg is tapped or fermenting. All are separated by a "!".
+* data: strings in 3 format. The first is always the thermometer, while the others depend on if a keg is stored/tapped or fermenting. All are separated by a "!".
 	* Thermometer is in the format "0_T_0_0_0"
 		* T - Current temperature in Fahrenheit of the kegerator.
-	* Tapped is in the format "Location_kT_0_State_Weight"
+	* Tapped & stored kegs are in the format "Location_kT_kOz_State_Weight"
 		* Location - 1-4, for Taps and kegs (a two-tap system has Tap 1, Tap 2, and Keg 3; a three-tap system has Tap 1, Tap 2, Tap 3, and Keg 4).
 		* kT - Current temperature in Fahrenheit of the keg/KegWarmer.
-		* State - 1=tapped, unknown if others.
+		* kOz - Current liquids ounces remaining (converted to "pints remaining" on the web interface).
+		* State - 1=On Tap, 3=On Deck, and unknown if others.
 		* Weight - Adjusted weight of the beer only, in grams. The Fermentation call includes a value for the weight of the keg, which is subtracted from the raw number the KegPlate reports to the KegSmarts (as can be seen on the device via Home-> Configure KegSmarts-> Configure Equipment-> KegPlate-> Test KegPlate).
-	* Fermenting is in the format "Location_kT_nnn_State_Weight_Fermentation_n_Time_fT"
+	* Fermenting is in the format "Location_kT_kOz_State_Weight_Fermentation_n_Time_fT"
 		* Location - 1-4, for Taps and kegs (a two-tap system has Tap 1, Tap 2, and Keg 3; a three-tap system has Tap 1, Tap 2, Tap 3, and Keg 4).
 		* kT - Current temperature in Fahrenheit of the keg/KegWarmer.
-		* nnn - A 3-digit value that appears to increase and decrease at times throughout the fermentation. Does not correspond to SG. Perhaps a more sensitive temperature reading to 3 decimals?
-		* State - 2=fermenting, unknown if others.
+		* kOz - Current liquid ounces.
+		* State - 2=Fermenting
 		* Weight - Adjusted weight of the beer only, in grams. The Fermentation call includes a value for the weight of the keg, which is subtracted from the raw number the KegPlate reports to the KegSmarts (as can be seen on the device via Home-> Configure KegSmarts-> Configure Equipment-> KegPlate-> Test KegPlate).
 		* Fermentation - Appears to be static.
 		* n - Appears to be static at "1".
@@ -120,7 +121,7 @@ Example 1:
 ```
 GET /api/ks/rev1/log?machine=1234ab123456&data=0_50_0_0_0!1_50_0_1_17000!2_50_0_1_-3515! 
 ```
-This example shows a kegerator temperature of 50F, Keg 1 is tapped with a temperature of 50F and an adjusted KegPlate reading of 17,000 grams, and Keg 2 is tapped with a temperature of 50F and an adjusted KegPlate reading -3,515 grams (as the KegPlate has nothing physically on it, and the keg's weight was set at 3,515 grams from the last Fermentation call).
+This example shows a kegerator temperature of 50F, Keg 1 is tapped with a temperature of 50F and an adjusted KegPlate reading of 17,000 grams, and Keg 2 is tapped with a temperature of 50F and an adjusted KegPlate reading -3,515 grams (as the KegPlate had nothing physically on it, and the keg's weight was set at 3,515 grams from the last Fermentation call).
 
 Example 2:
 
@@ -165,10 +166,10 @@ Values (NOTE: this is a fairly complicated string, so many of these are best gue
 	* Location - 1-4, for Taps and kegs (a two-tap system has Tap 1, Tap 2, and Keg 3; a three-tap system has Tap 1, Tap 2, Tap 3, and Keg 4).
 	* ID - 1-4 for KegPlates, and 1-2 for KegWarmers (to match the GUI selection on the KegSmarts and the label on the PicoBrew web interface).
 * K: Keg string in three formats. This data displays on the KegSmarts device. All start with "Type|Location"
-	* Type - 0=Inactive, 1=Tapped, 2=Fermenting
+	* Type - 0=Inactive, 1=On Tap, 2=Fermenting, 3=On Deck
 	* Location - 1-4, for Taps and kegs (a two-tap system has Tap 1, Tap 2, and Keg 3; a three-tap system has Tap 1, Tap 2, Tap 3, and Keg 4).
 	* Inactive - No further data included.
-	* Tapped - Follows with "|ABV|IBU|Temp|user|Beer Name|Beer Style|Hops|Grains|Oz Remaining|DaysT|kWeight|Rating"
+	* On Tap - Follows with "|ABV|IBU|Temp|user|Beer Name|Beer Style|Hops|Grains|Rating|DaysT|kWeight|Oz Remaining"
 		* ABV - Alcohol by volume to 1 decimal. Pulled from the recipe.
 		* IBU - International bitterness units. Pulled from the recipe.
 		* Temp - Current serving temperature in Fahrenheit of keg/KegWarmer.
@@ -177,18 +178,19 @@ Values (NOTE: this is a fairly complicated string, so many of these are best gue
 		* Beer Style - Pulled from the recipe.
 		* Hops - Pulled from the recipe. 
 		* Grains - Pulled from the recipe. Does not display on the device.
-		* Oz Remaining - Converted from grams via adjusted KegPlate to ounces, or adjusted via "Dispense Menu-> Pour a Glass" selection on KegSmarts device.
+		* Rating = 0-5 out of 5. Selected via "Dispense Menu-> Ratings" selection on KegSmarts device or via the PicoBrew web interface.
 		* DaysT - Time in days since the keg was tapped.
 		* kWeight - Keg's weight in grams, to be subtracted from the raw KegPlate measurement recorded by the KegSmarts. Pulled from the recipe.
-		* Rating = 0-5 out of 5. Selected via "Dispense Menu-> Ratings" selection on KegSmarts device or via the PicoBrew web interface.
-	* Fermenting - Follows with "|Beer Name|hash|fT|?|Time|Ferment|Crash|Rating"
+		* Oz Remaining - Converted from grams via adjusted KegPlate to ounces, or adjusted via "Dispense Menu-> Pour a Glass" selection on KegSmarts device.
+	* Fermenting - Follows with "|Beer Name|hash|fT|fState|Time|Ferment|Crash|Rating"
 		* Beer Name - Pulled from the fermentation.
 		* hash - Appears this is a unique ID generated from PicoBrew's server.
 		* sT - Current set temperature in Fahrenheit of the fermentation session.
-		* ? - Appears to be static at "1".
+		* fState - 1=fermenting, 2=cold crash
 		* Time - Minutes remaining of fermentation session until the cold crash.
 		* Ferment - Appears to be static "Fermentation, goal session temperature in Fahrenheit, total fermentation time in minutes". Pulled from the fermentation.
 		* Crash - Appears to be static "Crash Chill, goal crash temperature in Fahrenheit, 0" 
+	* On Deck - Follows with "|ABV|IBU|Temp|user", similar to On Tap above.
 
 Example 1:
 
@@ -230,18 +232,20 @@ In addition to being called at boot, appears to be called when the user adds, re
 
 ## ferment
 
-A two-step process. The first step is initiated via "Main Menu-> Start Fermenting" on the KegSmarts device. The second step is initiated by selecting an option from the list that appears.
+A multistep process.
+
+When starting a fermentation, the first step is initiated via "Main Menu-> Start Fermenting" on the KegSmarts device. The second step is initiated by selecting an option from the list that appears.
 
 ##### Request - Step 1
 
-`GET /api/ks/rev1/ferment?machine=<PID>code=<code> HTTP/1.0
+`GET /api/ks/rev1/ferment?machine=<PID>&code=<code> HTTP/1.0
 Host: www.picobrew.com
 Connection: Keep-Alive`
 
 Values:
 
 * PID: The product ID for the KegSmarts, as reported on PicoBrew's User->Settings->Equipment page.
-* code: 0=pull list from server 1=pull session info
+* code: 0=pull list from server, 1=pull session info
 
 ##### Response - Step 1
 
@@ -257,19 +261,19 @@ Example 1:
 ```
 #NB Honey Kolsch/AAAD6571BAA847CAACBFF24DA7AFED8A|Black is Beautiful/1E2FCAA36AB84A56B8F6C1F84C14602F|*Stargazer Z Kit/EC0B600CDA884D608A187DBB74608D84|*Black Mamba/3BA60A02EBF0477791443563CCDA38F3|*Brickwarmer Red/EFB0D5D9091647428D9D183FBD2B281E#
 ```
-The Beer Names then display as a list of possible fermentation sessions to select from on the KegSmarts device.
+The Beer Names then display as a list of possible fermentation sessions to select from on the KegSmarts device. Only NB Honey Kolsch and Black is Beautiful have not already been selected for fermentation.
 
 ##### Request - Step 2
-`GET /api/ks/rev1/ferment?machine=<PID>&code=<code>&session=<hash1>&tap=<Location> HTTP/1.0
+`GET /api/ks/rev1/ferment?machine=<PID>&code=<code>&session=<hash1>&tap=<tap> HTTP/1.0
 Host: www.picobrew.com
 Connection: Keep-Alive`
 
 Values:
 
 * PID: The product ID for the KegSmarts, as reported on PicoBrew's User->Settings->Equipment page.
-* code: 0=pull list from server 1=pull session info
+* code: 0=pull list from server, 1=pull session info 
 * hash1: The unique ID from the list in step 1.
-* Location - 1-4, for Taps and kegs (a two-tap system has Tap 1, Tap 2, and Keg 3; a three-tap system has Tap 1, Tap 2, Tap 3, and Keg 4).
+* tap: 1-4, for Taps and kegs (a two-tap system has Tap 1, Tap 2, and Keg 3; a three-tap system has Tap 1, Tap 2, Tap 3, and Keg 4).
 
 Example 1:
 
@@ -298,6 +302,29 @@ Example 1:
 ```
 These values are for "Black is Beautiful".
 
+##### Request - Step 3
+`GET /api/ks/rev1/ferment?machine=<PID>&code=<code>&ferment=<Location> HTTP/1.0
+Host: www.picobrew.com
+Connection: Keep-Alive`
+
+Values:
+
+* PID: The product ID for the KegSmarts, as reported on PicoBrew's User->Settings->Equipment page.
+* code: 3=cold crash 
+* Location: 1-4, for Taps and kegs (a two-tap system has Tap 1, Tap 2, and Keg 3; a three-tap system has Tap 1, Tap 2, Tap 3, and Keg 4).
+
+Example 1:
+
+```
+GET /api/ks/rev1/ferment?machine=1234ab123456&code=3&ferment=3
+```
+
+This is the result of selecting to move along the beer in keg 3 from Fermenting to Cold Chill on the PicoBrew web interface.
+
+##### Response - Step 3
+
+`##`
+
 ## ksacknowledge
 
 As above, only seems to be called after ksget. All known details described above during boot.
@@ -305,6 +332,34 @@ As above, only seems to be called after ksget. All known details described above
 ## ksget
 
 In addition to being called every boot, appears to be called when changes on the server prompt a response to "log" calls with "#1#". All known details described above during boot.
+
+## ksratebeer
+
+Called when a beer On Tap is rated.
+
+##### Request
+
+`GET /api/ks/ratebeer?machine=<PID>&tap=<tap>&rating=<rating> HTTP/1.0
+Host: www.picobrew.com
+Connection: Keep-Alive`
+
+Values:
+
+* PID: The product ID for the KegSmarts, as reported on PicoBrew's User->Settings->Equipment page.
+* tap: 1-3, based on the taps available.
+* rating: 0-10 (converts to 0-5 stars, with 1/2 values possible, on both KegSmarts and PicoBrew web interface)
+
+##### Response
+
+`##`
+
+Example 1:
+
+```
+GET /api/ks/ratebeer?machine=1234ab123456&tap=1&rating=9
+```
+Rates the beer on Tap 1 at 4.5 stars.
+
 
 ## log
 
