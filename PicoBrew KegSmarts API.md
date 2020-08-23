@@ -169,7 +169,7 @@ Values:
 	* Type - 0=Inactive, 1=On Tap, 2=Fermenting, 3=On Deck
 	* Location - 1-4, for Taps and kegs (a two-tap system has Tap 1, Tap 2, and Keg 3; a three-tap system has Tap 1, Tap 2, Tap 3, and Keg 4).
 	* Inactive - No further data included.
-	* On Tap/On Deck - Follows with "|ABV|IBU|Temp|user|Beer Name|Beer Style|Hops|Grains|n|DaysT|kWeight|Oz Remaining"
+	* On Tap/On Deck - Follows with "|ABV|IBU|Temp|user|Beer Name|Beer Style|Hops|Grains|Rating|DaysT|kWeight|Oz Remaining"
 		* ABV - Alcohol by volume to 1 decimal. Pulled from the recipe.
 		* IBU - International bitterness units. Pulled from the recipe.
 		* Temp - Current serving temperature in Fahrenheit of keg/KegWarmer.
@@ -178,11 +178,11 @@ Values:
 		* Beer Style - Pulled from the recipe.
 		* Hops - Pulled from the recipe. 
 		* Grains - Pulled from the recipe. Does not display on the device.
-		* n - Unknown. Appears to be static at "0".
+		* Rating - 0-10, representing 1-5 stars (1/2 stars are possible) on both the KegSmarts and PicoBrew web interface.
 		* DaysT - Time in days since the keg was tapped.
 		* kWeight - Keg's weight in grams, to be subtracted from the raw KegPlate measurement recorded by the KegSmarts. Pulled from the recipe.
 		* Oz Remaining - Converted from grams via adjusted KegPlate to ounces, or adjusted via "Dispense Menu-> Pour a Glass" selection on KegSmarts device.
-	* Fermenting - Follows with "|Beer Name|hash|fT|fState|Time|Ferment|Crash|Rating"
+	* Fermenting - Follows with "|Beer Name|hash|fT|fState|Time|Ferment|Crash"
 		* Beer Name - Pulled from the fermentation.
 		* hash - Appears this is a unique ID generated from PicoBrew's server.
 		* sT - Current set temperature in Fahrenheit of the fermentation session.
